@@ -17,8 +17,11 @@
         <java.version>1.8</java.version>
 
         <!-- Akka components' version -->
-        <akka-actor.version>2.3.6</akka-actor.version>
-        <akka-testkit.version>2.3.6</akka-testkit.version>
+        <akka.version>2.3.6</akka.version>
+
+        <!-- Logging -->
+        <!--<logback-classic.version>1.0.0</logback-classic.version>-->
+        <akka-slf4j.version>2.3.11</akka-slf4j.version>
 
         <!-- JUnit components' version -->
         <junit.version>4.11</junit.version>
@@ -29,15 +32,28 @@
         <dependency>
             <groupId>com.typesafe.akka</groupId>
             <artifactId>akka-actor_${scala.version}</artifactId>
-            <version>${akka-actor.version}</version>
+            <version>${akka.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.typesafe.akka</groupId>
             <artifactId>akka-testkit_${scala.version}</artifactId>
-            <version>${akka-testkit.version}</version>
+            <version>${akka.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-slf4j_${scala.version}</artifactId>
+            <version>${akka-slf4j.version}</version>
+        </dependency>
+
+        <!--<dependency>-->
+            <!--<groupId>ch.qos.logback</groupId>-->
+            <!--<artifactId>logback-classic</artifactId>-->
+            <!--<version>${logback-classic.version}</version>-->
+            <!--<scope>runtime</scope>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>junit</groupId>
