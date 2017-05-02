@@ -107,7 +107,7 @@ public class TestJavaPongActor {
                 .handle((ret, ex) -> ex == null ?
                         CompletableFuture.completedFuture(ret) :
                         askPong("Ping"))
-                .thenCompose(this::toNewCompletableFuture)
+                .thenCompose(this::toCompletableFuture)
                 .handle((ret, ex) -> {
                     if (ret != null)
                         actorSystem.log().info("Get result ==> {}.", ret);
@@ -119,7 +119,7 @@ public class TestJavaPongActor {
         Thread.sleep(100);
     }
 
-    private <T> CompletableFuture<T> toNewCompletableFuture(CompletionStage<T> stage) {
+    private <T> CompletableFuture<T> toCompletableFuture(CompletionStage<T> stage) {
 //        CompletableFuture<T> f = new CompletableFuture<>();
 //        stage.handle((T t, Throwable ex) -> {
 //            if (ex != null) f.completeExceptionally(ex);
