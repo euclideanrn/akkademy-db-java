@@ -7,14 +7,22 @@
     <groupId>com.tunnell</groupId>
     <artifactId>akkademy-db-java</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>chapter1</module>
+        <module>chapter2</module>
+    </modules>
 
     <properties>
         <!-- Basic components' version -->
         <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
 
         <!-- Language version -->
-        <scala.version>2.10</scala.version>
+        <scala.version>2.11</scala.version>
         <java.version>1.8</java.version>
+
+        <!-- Language Helper -->
+        <scala-java8-compat.version>0.6.0</scala-java8-compat.version>
 
         <!-- Akka components' version -->
         <akka.version>2.3.6</akka.version>
@@ -22,6 +30,9 @@
         <!-- Logging -->
         <!--<logback-classic.version>1.0.0</logback-classic.version>-->
         <akka-slf4j.version>2.3.11</akka-slf4j.version>
+
+        <!-- Utilities -->
+        <commons-lang3.version>3.4</commons-lang3.version>
 
         <!-- JUnit components' version -->
         <junit.version>4.11</junit.version>
@@ -49,11 +60,17 @@
         </dependency>
 
         <!--<dependency>-->
-            <!--<groupId>ch.qos.logback</groupId>-->
-            <!--<artifactId>logback-classic</artifactId>-->
-            <!--<version>${logback-classic.version}</version>-->
-            <!--<scope>runtime</scope>-->
+        <!--<groupId>ch.qos.logback</groupId>-->
+        <!--<artifactId>logback-classic</artifactId>-->
+        <!--<version>${logback-classic.version}</version>-->
+        <!--<scope>runtime</scope>-->
         <!--</dependency>-->
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
