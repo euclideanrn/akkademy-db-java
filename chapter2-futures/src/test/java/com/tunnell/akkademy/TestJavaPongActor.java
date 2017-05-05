@@ -197,6 +197,7 @@ public class TestJavaPongActor {
         return stage.toCompletableFuture();
     }
 
+    @SuppressWarnings("unchecked")
     private CompletionStage<Object> askPong(String message) {
         final Future<Object> sFuture = Patterns.ask(actorRef, message, 1000);
 
