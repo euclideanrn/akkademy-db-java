@@ -19,13 +19,21 @@ class AkkademyDb extends AbstractActor {
     final Map<String, Object> map = new HashMap<>();
 
     private AkkademyDb() {
-        receive(ReceiveBuilder.
-                match(SetRequest.class, message -> {
+        receive(ReceiveBuilder
+
+                /**
+                 * If matches {@link SetRequest}, then store the value by key, and send response to client
+                 */
+                .match(SetRequest.class, message -> {
                     log.info("Received set request – key: {} value:{} ", message.getKey(), message.getValue());
 //                    System.out.printf("Received set request – key: %s value:%s ", message.getKey(), message.getValue());
                     map.put(message.getKey(), message.getValue());
-                }).
-                matchAny(o -> log.info("Received unknown message {} ", o)).build()
+                })
+
+                /**
+                 * If no matches, then send a information to client.
+                 */
+                .matchAny(o -> log.info("Received unknown message {} ", o)).build()
         );
     }
 }
