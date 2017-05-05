@@ -11,6 +11,7 @@
     <modules>
         <module>chapter1</module>
         <module>chapter2-futures</module>
+        <module>chapter2</module>
     </modules>
 
     <properties>
@@ -22,7 +23,7 @@
         <java.version>1.8</java.version>
 
         <!-- Language Helper -->
-        <scala-java8-compat.version>0.7.0</scala-java8-compat.version>
+        <scala-java8-compat.version>0.6.0</scala-java8-compat.version>
 
         <!-- Akka components' version -->
         <akka.version>2.3.6</akka.version>
