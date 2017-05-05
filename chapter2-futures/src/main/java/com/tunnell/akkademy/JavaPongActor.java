@@ -12,8 +12,10 @@ import scala.runtime.BoxedUnit;
 
 /**
  * Created by TunnellZhao on 2017/4/30.
+ *
+ * JavaPongActor, created for remote interactive testing with Actor.
  */
-public class JavaPongActor extends AbstractActor {
+class JavaPongActor extends AbstractActor {
 
     private final LoggingAdapter log = Logging.getLogger(context().system(), this);
 
@@ -21,7 +23,7 @@ public class JavaPongActor extends AbstractActor {
         log.info("Create an instance of JavaPongActor. With message: {}.", message);
     }
 
-    public static Props props(String message) {
+    static Props props(String message) {
         return Props.create(JavaPongActor.class, message);
     }
 

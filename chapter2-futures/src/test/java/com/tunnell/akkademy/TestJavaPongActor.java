@@ -10,7 +10,10 @@ import org.junit.Test;
 import scala.compat.java8.FutureConverters;
 import scala.concurrent.Future;
 
+import java.io.IOException;
+import java.util.Optional;
 import java.util.concurrent.*;
+import java.util.stream.Stream;
 
 /**
  * Actor request/response testing
@@ -107,7 +110,8 @@ public class TestJavaPongActor {
                 .handle((ret, ex) -> ex == null ?
                         CompletableFuture.completedFuture(ret) :
                         askPong("Ping"))
-                .thenCompose(this::toCompletableFuture)
+//                .thenCompose(this::toCompletableFuture)
+                .thenCompose(x -> x)
                 .handle((ret, ex) -> {
                     if (ret != null)
                         actorSystem.log().info("Get result ==> {}.", ret);
@@ -119,6 +123,70 @@ public class TestJavaPongActor {
         Thread.sleep(100);
     }
 
+    @Test
+    public void testComposeFutureWithException() throws InterruptedException {
+        askPong("unknown msg")
+                .handle((ret, ex) -> ex == null ?
+                        CompletableFuture.completedFuture(ret) :
+                        askPong("Ping"))
+                .thenCompose(fn -> {
+                    actorSystem.log().info(">>>>>>>>>>>>>Composing......");
+
+                    return fn;
+                })
+                .handle((ret, ex) -> {
+                    throw new RuntimeException("Failed to handle....");
+                })
+                .handle((ret, ex) -> {
+                    if (ret != null)
+                        actorSystem.log().info("Get result ==> {}.", ret);
+                    if (ex != null)
+                        actorSystem.log().error(ex, "Failed to communicate with actor. Due to: ", ex);
+                    return null;
+                });
+
+        Thread.sleep(100);
+    }
+
+    @Test
+    public void testThenCombineFuture() throws InterruptedException {
+        askPong("Ping")
+                .thenCombine(askPong("Ping"), (ret1, ret2) -> {
+            actorSystem.log().info("Get first result ==> {}.", ret1);
+            actorSystem.log().info("Get second result ==> {}.", ret2);
+            return String.format("%s%s", ret1, ret2);
+        }).whenComplete((ret, ex) -> {
+            if (ret != null)
+                actorSystem.log().info("Get final result ==> {}.", ret);
+            if (ex != null)
+                actorSystem.log().error(ex, "Failed to communicate with actor. Due to: ", ex);
+        });
+
+        Thread.sleep(100);
+    }
+
+    @Test
+    public void testMultipleFutures() throws InterruptedException, IOException {
+        TestingSocketServer.createServer(26666, actorSystem.log(), () -> {
+
+            Optional<CompletionStage<Object>> finalResult = Stream.of("Ping", "Ping", "Ping", "Ping", "Ping", "Ping")
+                    .flatMap(s -> Stream.of(askPong(s)))
+                    .reduce((cs1, cs2) -> cs1.thenCombine(cs2, (ret1, ret2) -> String.format("%s%s", ret1, ret2)));
+
+            if (finalResult.isPresent()) {
+                CompletionStage<Object> csFinal = finalResult.get();
+                csFinal.handle((ret, ex) -> {
+                    if (ret != null)
+                        actorSystem.log().info("Get result ==> {}.", ret);
+                    if (ex != null)
+                        actorSystem.log().error(ex, "Failed to communicate with actor. Due to: ", ex);
+                    return null;
+                });
+            }
+        });
+    }
+
+    @SuppressWarnings("unused")
     private <T> CompletableFuture<T> toCompletableFuture(CompletionStage<T> stage) {
 //        CompletableFuture<T> f = new CompletableFuture<>();
 //        stage.handle((T t, Throwable ex) -> {

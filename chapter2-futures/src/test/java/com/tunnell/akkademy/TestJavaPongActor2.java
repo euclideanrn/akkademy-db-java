@@ -87,14 +87,17 @@ public class TestJavaPongActor2 {
                 .handle((pong, ex) -> ex == null
                         ? CompletableFuture.completedFuture(pong)
                         : askPong("Ping")
-                ).thenCompose(this::toCompletableFuture);
+                )
+//                .thenCompose(this::toCompletableFuture);
+                .thenCompose(fn -> fn);
         assertEquals("Pong", get(cf));
     }
 
     @Test
     public void shouldChainTogetherMultipleOperations() throws Exception {
         CompletionStage<String> cs = askPong("Ping")
-                .thenCompose(x -> toCompletableFuture(askPong("Ping" + x)))
+//                .thenCompose(x -> toCompletableFuture(askPong("Ping" + x)))
+                .thenCompose(x -> askPong("Ping" + x))
                 .handle((x, t) -> t != null
                         ? "default"
                         : x);
@@ -124,6 +127,7 @@ public class TestJavaPongActor2 {
         return toJava(sFuture);
     }
 
+    @SuppressWarnings("unused")
     private <T> CompletableFuture<T> toCompletableFuture(CompletionStage<T> stage) {
 
         /**

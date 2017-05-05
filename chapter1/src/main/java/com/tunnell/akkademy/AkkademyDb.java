@@ -1,9 +1,5 @@
 package com.tunnell.akkademy;
 
-/**
- * Created by TunnellZhao on 2017/4/28.
- */
-
 import akka.actor.AbstractActor;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
@@ -13,9 +9,14 @@ import com.tunnell.akkademy.messages.SetRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AkkademyDb extends AbstractActor {
-    protected final LoggingAdapter log = Logging.getLogger(context().system(), this);
-    protected final Map<String, Object> map = new HashMap<>();
+/**
+ * Created by TunnellZhao on 2017/4/28.
+ *
+ * AkkademyDb, first akka actor, simply store the message in memory, and send response to the caller
+ */
+class AkkademyDb extends AbstractActor {
+    private final LoggingAdapter log = Logging.getLogger(context().system(), this);
+    final Map<String, Object> map = new HashMap<>();
 
     private AkkademyDb() {
         receive(ReceiveBuilder.
