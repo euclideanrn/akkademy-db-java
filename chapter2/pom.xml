@@ -9,14 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>chapter2-futures</artifactId>
+    <artifactId>chapter2</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.scala-lang.modules</groupId>
-            <artifactId>scala-java8-compat_${scala.version}</artifactId>
-            <version>${scala-java8-compat.version}</version>
-        </dependency>
-    </dependencies>
 
 </project>
