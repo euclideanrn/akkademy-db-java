@@ -51,7 +51,7 @@ class AkkademyDb extends AbstractActor {
                         response = new SingleResponse();
                     }
 
-                    sender().tell(new Status.Success(response), self());
+                    tellSuccess(response);
                 })
 
                 /**
@@ -69,10 +69,9 @@ class AkkademyDb extends AbstractActor {
                                 .filter(key -> message.getPattern().matcher(key).matches())
                                 .collect(Collectors.toMap(Function.identity(), map::get));
 
-                        sender().tell(new Status.Success(new BatchResponse(results)), self());
+                        tellSuccess(new BatchResponse(results));
                     } else {
-                        sender().tell(new Status.Success(new SingleResponse(
-                                message.getKey(), map.get(message.getKey()))), self());
+                        tellSuccess(new SingleResponse(message.getKey(), map.get(message.getKey())));
                     }
                 })
 
@@ -90,9 +89,9 @@ class AkkademyDb extends AbstractActor {
                             : null;
 
                     map.remove(key);
-                    sender().tell(new Status.Success(new SingleResponse(
+                    tellSuccess(new SingleResponse(
                             message.getKey(), val
-                    )), self());
+                    ));
                 })
 
                 /**
@@ -100,10 +99,18 @@ class AkkademyDb extends AbstractActor {
                  */
                 .matchAny(o -> {
                     log.warning("Received unknown type message: {}", o);
-                    sender().tell(new Status.Failure(new UnsupportedCommandException()), self());
+                    tellFailure(new UnsupportedCommandException());
                 })
 
                 .build()
         );
+    }
+
+    private void tellSuccess(Object message) {
+        sender().tell(new Status.Success(message), self());
+    }
+
+    private void tellFailure(Throwable throwable) {
+        sender().tell(new Status.Failure(throwable), self());
     }
 }
