@@ -9,6 +9,19 @@
         <version>0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>chapter1</artifactId>
+    <artifactId>chapter3</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.syncthemall</groupId>
+            <artifactId>boilerpipe</artifactId>
+            <version>${boilerpipe.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tunnell</groupId>
+            <artifactId>akkademy-db-server</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>

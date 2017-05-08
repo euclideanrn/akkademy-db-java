@@ -6,12 +6,13 @@
 
     <groupId>com.tunnell</groupId>
     <artifactId>akkademy-db-java</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
         <module>chapter1</module>
         <module>chapter2-futures</module>
         <module>chapter2</module>
+        <module>chapter3</module>
     </modules>
 
     <properties>
@@ -34,6 +35,7 @@
 
         <!-- Utilities -->
         <commons-lang3.version>3.4</commons-lang3.version>
+        <boilerpipe.version>1.2.2</boilerpipe.version>
 
         <!-- JUnit components' version -->
         <junit.version>4.11</junit.version>
