@@ -8,4 +8,6 @@ import java.io.Serializable;
  * Throws {@link UnsupportedCommandException} if the request command cannot be recognized
  */
 public class UnsupportedCommandException extends Exception implements Serializable {
+
+    public UnsupportedCommandException() {}
 }

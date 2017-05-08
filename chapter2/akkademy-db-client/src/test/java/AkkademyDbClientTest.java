@@ -1,14 +1,18 @@
+import akka.actor.ActorSystem;
+import akka.actor.Props;
+import com.tunnell.akkademy.AkkademyDb;
+import com.tunnell.akkademy.AkkademyDbActor;
 import com.tunnell.akkademy.AkkademyDbClient;
+import com.tunnell.akkademy.messages.BatchResponse;
 import com.tunnell.akkademy.messages.SingleResponse;
 import com.tunnell.akkademy.messages.UnsupportedCommandException;
+import com.typesafe.config.ConfigFactory;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.io.Serializable;
-import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -24,11 +28,15 @@ public class AkkademyDbClientTest {
     private static final String val1 = "pie";
     private static final String newVal = "pie-apple";
 
-    private static final String key2 = "pencil";
-    private static final String val2 = "ball";
+    private static final String key2 = "pie-apple-pie";
+    private static final String val2 = "pie-apple-pie-apple";
+
+    private AkkademyDb akkademyDb;;
 
     @Before
     public void prepare() {
+        akkademyDb = new AkkademyDb();
+
         client = new AkkademyDbClient("127.0.0.1", 2552);
     }
 
@@ -114,6 +122,35 @@ public class AkkademyDbClientTest {
         Assert.assertEquals(deleteResponse.getValue(), val1);
     }
 
+    @Test
+    public void itShouldGetByRegex() throws ExecutionException, InterruptedException {
+        deleteAndCheck(key1);
+        deleteAndCheck(key2);
+
+        setAndCheck(key1, val1);
+        setAndCheck(key2, val2);
+
+        BatchResponse regexGetResponse = client.getByRegex(".*apple.*").toCompletableFuture().get();
+        client.log().info("Receive set response : {}.", regexGetResponse.getResults());
+        Assert.assertEquals(regexGetResponse.get(key1), val1);
+        Assert.assertEquals(regexGetResponse.get(key2), val2);
+        Assert.assertArrayEquals(regexGetResponse.getKeys().toArray(), new Object[] {key1, key2});
+        Assert.assertArrayEquals(regexGetResponse.getValues().toArray(), new Object[] {val1, val2});
+    }
+
+    @Test
+    public void itShouldGetKeys() throws ExecutionException, InterruptedException {
+        deleteAndCheck(key1);
+        deleteAndCheck(key2);
+
+        setAndCheck(key1, val1);
+        setAndCheck(key2, val2);
+
+        BatchResponse regexGetResponse = client.getKeys().toCompletableFuture().get();
+        client.log().info("Receive set response: {}.", regexGetResponse);
+        Assert.assertArrayEquals(regexGetResponse.getKeys().toArray(), new Object[] {key1, key2});
+    }
+
     @Test(expected = UnsupportedCommandException.class)
     public void itShouldRaiseUnsupportedCommandException() throws Throwable {
         try {
@@ -150,5 +187,6 @@ public class AkkademyDbClientTest {
     @After
     public void cleanup() throws IOException {
         client.close();
+        akkademyDb.shutdown();
     }
 }

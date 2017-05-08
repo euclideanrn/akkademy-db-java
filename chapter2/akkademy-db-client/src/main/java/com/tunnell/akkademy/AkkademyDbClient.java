@@ -55,6 +55,11 @@ public class AkkademyDbClient implements Closeable {
                 .thenApply(BatchResponse.class::cast);
     }
 
+    public CompletionStage<BatchResponse> getKeys() {
+        return toJava(ask(remoteDb, new GetKeysRequest(), TIMEOUT_MILLS))
+                .thenApply(BatchResponse.class::cast);
+    }
+
     public CompletionStage<SingleResponse> delete(String key) {
         return toJava(ask(remoteDb, new DeleteRequest(key, false), TIMEOUT_MILLS))
                 .thenApply(SingleResponse.class::cast);
@@ -62,11 +67,6 @@ public class AkkademyDbClient implements Closeable {
 
     public CompletionStage<SingleResponse> delete(String key, boolean deleteAndGet) {
         return toJava(ask(remoteDb, new DeleteRequest(key, deleteAndGet), TIMEOUT_MILLS))
-                .thenApply(SingleResponse.class::cast);
-    }
-
-    public CompletionStage<SingleResponse> deleteAndGet(String key) {
-        return toJava(ask(remoteDb, new DeleteRequest(key, true), TIMEOUT_MILLS))
                 .thenApply(SingleResponse.class::cast);
     }
 

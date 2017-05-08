@@ -15,10 +15,6 @@ public class SingleResponse implements Serializable {
         this(null, null);
     }
 
-    public SingleResponse(String key) {
-        this(key, null);
-    }
-
     public SingleResponse(String key, Object value) {
         this.key = key;
         this.value = value;

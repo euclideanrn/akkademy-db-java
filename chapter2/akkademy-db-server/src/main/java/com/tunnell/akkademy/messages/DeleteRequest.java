@@ -12,11 +12,6 @@ public class DeleteRequest implements Serializable {
 
     private final boolean deleteAndGet;
 
-    public DeleteRequest(String key) {
-        this.key = key;
-        this.deleteAndGet = false;
-    }
-
     public DeleteRequest(String key, boolean deleteAndGet) {
         this.key = key;
         this.deleteAndGet = deleteAndGet;

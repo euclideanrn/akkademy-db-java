@@ -14,8 +14,7 @@ public class GetRequest implements Serializable {
     private final Pattern pattern;
 
     public GetRequest(String key) {
-        this.key = key;
-        this.pattern = null;
+        this(key, false);
     }
 
     public GetRequest(String key, boolean isRegex) {

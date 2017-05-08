@@ -15,13 +15,6 @@ public class SetRequest implements Serializable {
 
     private final boolean setIfNotExists;
 
-    public SetRequest(String key, Object value) {
-        this.key = key;
-        this.value = value;
-        this.setAndGet = false;
-        this.setIfNotExists = false;
-    }
-
     public SetRequest(String key, Object value, boolean setAndGet, boolean setIfNotExists) {
         this.key = key;
         this.value = value;

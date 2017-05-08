@@ -12,22 +12,6 @@ public class BatchResponse implements Serializable {
 
     private final Map<String, Object> results;
 
-    public BatchResponse() {
-        results = null;
-    }
-
-    public BatchResponse(String key) {
-        Map<String, Object> map = new HashMap<>();
-        map.put(key, null);
-        results = Collections.unmodifiableMap(map);
-    }
-
-    public BatchResponse(String key, Object value) {
-        Map<String, Object> map = new HashMap<>();
-        map.put(key, value);
-        results = Collections.unmodifiableMap(map);
-    }
-
     public BatchResponse(Map<String, Object> results) {
         this.results = Collections.unmodifiableMap(results);
     }
@@ -54,5 +38,12 @@ public class BatchResponse implements Serializable {
         return results == null
                 ? Collections.emptyMap()
                 : results;
+    }
+
+    @Override
+    public String toString() {
+        return "BatchResponse{" +
+                "results=" + results +
+                '}';
     }
 }
