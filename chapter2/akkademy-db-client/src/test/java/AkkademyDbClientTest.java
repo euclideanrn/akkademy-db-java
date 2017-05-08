@@ -1,12 +1,8 @@
-import akka.actor.ActorSystem;
-import akka.actor.Props;
 import com.tunnell.akkademy.AkkademyDb;
-import com.tunnell.akkademy.AkkademyDbActor;
 import com.tunnell.akkademy.AkkademyDbClient;
 import com.tunnell.akkademy.messages.BatchResponse;
 import com.tunnell.akkademy.messages.SingleResponse;
 import com.tunnell.akkademy.messages.UnsupportedCommandException;
-import com.typesafe.config.ConfigFactory;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -31,7 +27,7 @@ public class AkkademyDbClientTest {
     private static final String key2 = "pie-apple-pie";
     private static final String val2 = "pie-apple-pie-apple";
 
-    private AkkademyDb akkademyDb;;
+    private AkkademyDb akkademyDb;
 
     @Before
     public void prepare() {
